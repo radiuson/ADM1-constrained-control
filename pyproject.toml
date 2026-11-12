@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adm1-constrained-control"
+version = "1.0.0"
+description = "Constrained control benchmark for anaerobic digestion on ADM1"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+# Enough to rebuild the paper's tables and figures from paper_data/ and to
+# train the ten reward-penalty families. The constrained families need
+# omnisafe, which pins an older gymnasium and is therefore a separate extra
+# installed into its own environment; see the README.
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=2.0",
+    "gymnasium>=0.29",
+    "stable-baselines3>=2.0",
+    "sb3-contrib>=2.0",
+    "torch>=2.0",
+    "pyyaml>=6.0",
+    "matplotlib>=3.7",
+    "tensorboard>=2.11",
+]
+
+[project.optional-dependencies]
+# The constrained (CMDP) families. omnisafe's pins conflict with the versions
+# the reward-penalty families run under, so this goes in its own environment
+# rather than alongside them.
+cmdp = [
+    "omnisafe>=0.5",
+]
+# Compiled ODE right-hand side, about 16x faster with identical results.
+fast = [
+    "numba>=0.58",
+]
+dev = [
+    "pytest>=7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["env*", "training*", "evaluation*"]

@@ -1,0 +1,145 @@
+# Biogas RL Benchmark - Scenario Configurations
+# Version: 1.0
+# Purpose: Define evaluation scenarios for testing controller robustness
+
+scenarios:
+  # Loading is the axis that separates these scenarios.  An initial state
+  # decays within about five days at nominal feed, whereas the loading of a
+  # scenario persists for the whole episode, so base organic load is the
+  # primary axis and initial state a secondary one.  The multipliers span the
+  # 1.5-6 kg COD/m3/d range reported for high-rate mesophilic municipal
+  # digesters, centred on the 3.6 kg COD/m3/d closed from the reference
+  # facility's own feed and biogas records.
+
+  low_load:
+    name: "Low Organic Load"
+    description: "Under-fed digester, OLR 1.5 kg COD/m3/d at nominal feed"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "steady_state"
+    influent: {type: "default", noise_level: 0.0, multiplier: 0.6}
+    temperature: 35.0
+    disturbances: []
+
+  nominal:
+    name: "Nominal Operation"
+    description: "OLR 2.4 kg COD/m3/d at nominal feed"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "steady_state"
+    influent: {type: "default", noise_level: 0.0, multiplier: 1.0}
+    temperature: 35.0
+    disturbances: []
+
+  plant_load:
+    name: "Reference Plant Load"
+    description: "OLR 3.7 kg COD/m3/d, the loading closed from the reference facility"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "steady_state"
+    influent: {type: "default", noise_level: 0.0, multiplier: 1.5}
+    temperature: 35.0
+    disturbances: []
+
+  high_load:
+    name: "High Organic Load"
+    description: "OLR 4.9 kg COD/m3/d at nominal feed"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "steady_state"
+    influent: {type: "default", noise_level: 0.0, multiplier: 2.0}
+    temperature: 35.0
+    disturbances: []
+
+  peak_load:
+    name: "Peak Organic Load"
+    description: "OLR 5.9 kg COD/m3/d, the upper end of the reported range"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "steady_state"
+    influent: {type: "default", noise_level: 0.0, multiplier: 2.4}
+    temperature: 35.0
+    disturbances: []
+
+  fog_surge:
+    name: "FOG Surge"
+    description: "Reference-plant loading with a five-day lipid-rich delivery from day 15"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "steady_state"
+    influent: {type: "default", noise_level: 0.0, multiplier: 1.5}
+    temperature: 35.0
+    disturbances:
+      - time_days: 15.0
+        type: "influent_spike"
+        magnitude: 2.5
+        duration_hours: 120
+        affected_vars: ["X_li", "S_fa"]
+
+  elevated_start:
+    name: "Elevated VFA Start"
+    description: "Reference-plant loading from an elevated-VFA state (503 mg/L)"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "elevated"
+    influent: {type: "default", noise_level: 0.0, multiplier: 1.5}
+    temperature: 35.0
+    disturbances: []
+
+  acidified_recovery:
+    name: "Acidified Recovery"
+    description: "Recovery from an accumulated-VFA state (2271 mg/L) at nominal load"
+    duration_days: 60
+    step_size_days: 0.01041667
+    initial_state: "acidified"
+    influent: {type: "default", noise_level: 0.0, multiplier: 1.0}
+    temperature: 35.0
+    disturbances: []
+
+initial_states:
+  steady_state:
+    description: "Default ADM1 steady-state (digester_initial.csv)"
+    source: "csv"
+    file: "digester_initial.csv"
+
+  elevated:
+    description: "Elevated VFA (503 mg/L as HAc), driven from steady state under load"
+    source: "csv"
+    file: "digester_elevated.csv"
+
+  acidified:
+    description: "Accumulated VFA (2271 mg/L as HAc), driven under sustained lipid overload"
+    source: "csv"
+    file: "digester_acidified.csv"
+
+  prestressed:
+    description: "Elevated VFA state (~0.20 kg COD/m3, 1.5x steady-state VFA)"
+    source: "csv"
+    file: "digester_prestressed.csv"
+
+# ========== Scenario Groups (for batch evaluation) ==========
+scenario_groups:
+  paper:  # Six scenarios used in the paper (Table II)
+    - nominal
+    - high_load
+    - low_load
+    - shock_load
+    - high_load_real
+    - pre_stressed
+
+  load:  # Standard load-variation scenarios
+    - nominal
+    - high_load
+    - low_load
+    - shock_load
+
+  extended:  # Load scenarios + data-grounded additions
+    - nominal
+    - high_load
+    - low_load
+    - shock_load
+    - high_load_real
+    - pre_stressed
+
+  counterfactual:  # Crisis reconstruction for RL vs. real-operator comparison
+    - sep2022_crisis
