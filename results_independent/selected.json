@@ -1,0 +1,62 @@
+{
+ "0": {
+  "name": "dual_sp180_Kc1_ti20_Km0.002_b15",
+  "kind": "dual",
+  "validation": {
+   "viol_rate": 0.0,
+   "fa_rate": 0.0,
+   "methane": 1726.5075632873545,
+   "steps": 600,
+   "zero_scen": 10,
+   "terminated_scen": 0
+  }
+ },
+ "1": {
+  "name": "dual_sp220_Kc0.05_ti20_Km0.008_b15",
+  "kind": "dual",
+  "validation": {
+   "viol_rate": 0.8333333333333334,
+   "fa_rate": 0.8333333333333334,
+   "methane": 1814.251093353527,
+   "steps": 600,
+   "zero_scen": 7,
+   "terminated_scen": 0
+  }
+ },
+ "3": {
+  "name": "dual_sp260_Kc0.1_ti20_Km0.002_b15",
+  "kind": "dual",
+  "validation": {
+   "viol_rate": 2.8333333333333335,
+   "fa_rate": 2.8333333333333335,
+   "methane": 1849.4803551803122,
+   "steps": 600,
+   "zero_scen": 5,
+   "terminated_scen": 0
+  }
+ },
+ "5": {
+  "name": "dual_sp300_Kc0.1_ti20_Km0.008_b90",
+  "kind": "dual",
+  "validation": {
+   "viol_rate": 5.0,
+   "fa_rate": 5.0,
+   "methane": 1865.3097232113842,
+   "steps": 600,
+   "zero_scen": 4,
+   "terminated_scen": 0
+  }
+ },
+ "10": {
+  "name": "dual_sp380_Kc0.05_ti20_Km0.03_b40",
+  "kind": "dual",
+  "validation": {
+   "viol_rate": 9.5,
+   "fa_rate": 9.5,
+   "methane": 1893.586600344105,
+   "steps": 600,
+   "zero_scen": 4,
+   "terminated_scen": 0
+  }
+ }
+}

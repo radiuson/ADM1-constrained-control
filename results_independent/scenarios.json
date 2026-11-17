@@ -1,0 +1,381 @@
+{
+ "validation": [
+  {
+   "id": "cand000",
+   "start_day": 209,
+   "mult": 0.799,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.018,
+    "start": 34,
+    "dur": 3.57,
+    "kind": "particulate"
+   }
+  },
+  {
+   "id": "cand001",
+   "start_day": 182,
+   "mult": 1.051,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand002",
+   "start_day": 216,
+   "mult": 1.09,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand003",
+   "start_day": 140,
+   "mult": 0.757,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.601,
+    "start": 8,
+    "dur": 4.35,
+    "kind": "particulate"
+   }
+  },
+  {
+   "id": "cand004",
+   "start_day": 220,
+   "mult": 1.027,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand005",
+   "start_day": 111,
+   "mult": 0.9,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.203,
+    "start": 34,
+    "dur": 5.43,
+    "kind": "particulate"
+   }
+  },
+  {
+   "id": "cand006",
+   "start_day": 185,
+   "mult": 2.025,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand007",
+   "start_day": 175,
+   "mult": 1.325,
+   "init": "elevated",
+   "event": {
+    "mag": 2.505,
+    "start": 7,
+    "dur": 2.69,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand008",
+   "start_day": 67,
+   "mult": 1.313,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand009",
+   "start_day": 186,
+   "mult": 0.95,
+   "init": "prestressed",
+   "event": {
+    "mag": 1.999,
+    "start": 39,
+    "dur": 5.94,
+    "kind": "lipid"
+   }
+  }
+ ],
+ "test": [
+  {
+   "id": "cand010",
+   "start_day": 133,
+   "mult": 1.814,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand011",
+   "start_day": 113,
+   "mult": 1.653,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.019,
+    "start": 35,
+    "dur": 6.42,
+    "kind": "lipid"
+   }
+  },
+  {
+   "id": "cand012",
+   "start_day": 220,
+   "mult": 1.52,
+   "init": "prestressed",
+   "event": null
+  },
+  {
+   "id": "cand013",
+   "start_day": 157,
+   "mult": 1.585,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand014",
+   "start_day": 79,
+   "mult": 1.726,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand015",
+   "start_day": 130,
+   "mult": 0.79,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.286,
+    "start": 6,
+    "dur": 2.6,
+    "kind": "particulate"
+   }
+  },
+  {
+   "id": "cand016",
+   "start_day": 178,
+   "mult": 0.908,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand017",
+   "start_day": 175,
+   "mult": 1.8,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand018",
+   "start_day": 131,
+   "mult": 1.107,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand019",
+   "start_day": 106,
+   "mult": 1.09,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.745,
+    "start": 41,
+    "dur": 4.96,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand020",
+   "start_day": 143,
+   "mult": 2.276,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.599,
+    "start": 42,
+    "dur": 6.88,
+    "kind": "lipid"
+   }
+  },
+  {
+   "id": "cand021",
+   "start_day": 193,
+   "mult": 1.709,
+   "init": "steady_state",
+   "event": {
+    "mag": 1.778,
+    "start": 19,
+    "dur": 6.02,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand022",
+   "start_day": 132,
+   "mult": 0.896,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand023",
+   "start_day": 194,
+   "mult": 0.724,
+   "init": "prestressed",
+   "event": null
+  },
+  {
+   "id": "cand024",
+   "start_day": 118,
+   "mult": 1.696,
+   "init": "elevated",
+   "event": {
+    "mag": 1.874,
+    "start": 43,
+    "dur": 5.95,
+    "kind": "lipid"
+   }
+  },
+  {
+   "id": "cand025",
+   "start_day": 203,
+   "mult": 1.043,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.345,
+    "start": 19,
+    "dur": 4.97,
+    "kind": "particulate"
+   }
+  },
+  {
+   "id": "cand026",
+   "start_day": 152,
+   "mult": 1.661,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand027",
+   "start_day": 135,
+   "mult": 1.732,
+   "init": "steady_state",
+   "event": {
+    "mag": 2.617,
+    "start": 33,
+    "dur": 5.35,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand028",
+   "start_day": 217,
+   "mult": 0.639,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand029",
+   "start_day": 123,
+   "mult": 2.355,
+   "init": "prestressed",
+   "event": null
+  },
+  {
+   "id": "cand030",
+   "start_day": 70,
+   "mult": 2.305,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand031",
+   "start_day": 105,
+   "mult": 0.818,
+   "init": "prestressed",
+   "event": {
+    "mag": 2.047,
+    "start": 20,
+    "dur": 4.79,
+    "kind": "lipid"
+   }
+  },
+  {
+   "id": "cand032",
+   "start_day": 127,
+   "mult": 0.765,
+   "init": "elevated",
+   "event": {
+    "mag": 1.842,
+    "start": 17,
+    "dur": 4.21,
+    "kind": "lipid"
+   }
+  },
+  {
+   "id": "cand033",
+   "start_day": 159,
+   "mult": 2.027,
+   "init": "elevated",
+   "event": null
+  },
+  {
+   "id": "cand034",
+   "start_day": 149,
+   "mult": 0.953,
+   "init": "elevated",
+   "event": {
+    "mag": 1.571,
+    "start": 18,
+    "dur": 6.95,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand035",
+   "start_day": 131,
+   "mult": 2.17,
+   "init": "prestressed",
+   "event": {
+    "mag": 1.568,
+    "start": 34,
+    "dur": 5.68,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand036",
+   "start_day": 190,
+   "mult": 1.732,
+   "init": "steady_state",
+   "event": {
+    "mag": 1.636,
+    "start": 26,
+    "dur": 3.08,
+    "kind": "lipid"
+   }
+  },
+  {
+   "id": "cand037",
+   "start_day": 206,
+   "mult": 0.919,
+   "init": "steady_state",
+   "event": null
+  },
+  {
+   "id": "cand038",
+   "start_day": 178,
+   "mult": 1.057,
+   "init": "prestressed",
+   "event": {
+    "mag": 1.777,
+    "start": 33,
+    "dur": 6.26,
+    "kind": "carbohydrate"
+   }
+  },
+  {
+   "id": "cand039",
+   "start_day": 195,
+   "mult": 1.596,
+   "init": "prestressed",
+   "event": null
+  }
+ ]
+}

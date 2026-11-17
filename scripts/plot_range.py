@@ -51,6 +51,9 @@ plt.rcParams.update({
     'axes.spines.top': False, 'axes.spines.right': False,
     'figure.dpi': 200, 'savefig.bbox': 'tight', 'savefig.pad_inches': 0.02,
 })
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import figstyle
+figstyle.apply()
 
 
 def both_envelopes():
@@ -116,23 +119,24 @@ def main():
     ax.scatter([b['viol'] for b in Bc], [b['ch4'] for b in Bc],
                s=11, c=C_CONV, marker='s', linewidths=0, alpha=0.75,
                zorder=1,
-               label=f'Common range (n={len(Bc)})')
+               label=f'Restricted sweep (n = {len(Bc)})')
     ax.scatter([b['viol'] for b in extra], [b['ch4'] for b in extra],
                s=22, facecolors='none', edgecolors=C_WIDE, linewidths=1.0,
-               zorder=2, label=f'Multiplier >1.3 (n={len(extra)})')
+               zorder=2, label=f'Multiplier 1.5 and 1.7 (n = {len(extra)})')
     ax.plot([p[0] for p in Ew], [p[1] for p in Ew], color=C_WIDE, lw=2.0,
             ls='-', alpha=0.55, zorder=3,
-            label=f'Wider envelope ({len(Ew)} pts)')
+            label=f'Wider-sweep envelope ({len(Ew)} points)')
     ax.plot([p[0] for p in Ec], [p[1] for p in Ec], color=C_COMMON, lw=1.3,
-            zorder=4, label=f'Reported envelope ({len(Ec)} pts)')
+            zorder=4, label=f'Restricted-sweep envelope ({len(Ec)} points)')
     # Any point where the two curves part company; with the dual-loop
     # family in the set there are none, and the legend says so.
     ax.scatter([p[0] for p in added], [p[1] for p in added],
                s=46, facecolors='none', edgecolors=C_WIDE, linewidths=1.6,
-               zorder=5, label=f'Added envelope points (n={len(added)})')
+               zorder=5, label=(f'Added envelope points (n = {len(added)})'
+                                if added else None))
 
     ax.set_xlabel('Steps above the soft limit (%)')
-    ax.set_ylabel('Mean methane flow (m$^3$/d)')
+    ax.set_ylabel(figstyle.FLOW)
     ax.set_xlim(-0.08, 2.5)
     # The whole conventional cloud in this window, not a crop of it:
     # cutting the axis at 1400 hid 54 of the 149 points without
@@ -141,13 +145,13 @@ def main():
     ax.grid(axis='y', color=C_GRID, lw=0.4, alpha=0.5)
     ax.set_axisbelow(True)
     ax.legend(loc='lower right', frameon=False, labelspacing=0.3,
-              handletextpad=0.5, fontsize=6.5)
+              handletextpad=0.5, fontsize=figstyle.TEXT)
     # The window is where the 16 added evaluations fall; the two envelopes
     # agree here and everywhere beyond, so the panel stops rather than
     # carrying 45 % of empty axis.
 
     p = os.path.join(out, 'fig_range.pdf')
-    fig.savefig(p)
+    figstyle.save(fig, p, figstyle.COLUMN)
     plt.close(fig)
 
     shifts = [abs(med_against(R[f], Ec) - med_against(R[f], Ew))

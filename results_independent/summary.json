@@ -1,0 +1,183 @@
+{
+ "n_test": 30,
+ "conventional": {
+  "0": {
+   "name": "dual_sp180_Kc1_ti20_Km0.002_b15",
+   "validation": {
+    "viol_rate": 0.0,
+    "fa_rate": 0.0,
+    "methane": 1726.5075632873545,
+    "steps": 600,
+    "zero_scen": 10,
+    "terminated_scen": 0
+   },
+   "test": {
+    "viol_rate": 0.3333333333333333,
+    "fa_rate": 0.3333333333333333,
+    "methane": 1775.7810321782656,
+    "zero_scen": 24,
+    "terminated_scen": 0
+   }
+  },
+  "1": {
+   "name": "dual_sp220_Kc0.05_ti20_Km0.008_b15",
+   "validation": {
+    "viol_rate": 0.8333333333333334,
+    "fa_rate": 0.8333333333333334,
+    "methane": 1814.251093353527,
+    "steps": 600,
+    "zero_scen": 7,
+    "terminated_scen": 0
+   },
+   "test": {
+    "viol_rate": 2.2777777777777777,
+    "fa_rate": 2.2777777777777777,
+    "methane": 1923.4797117237174,
+    "zero_scen": 13,
+    "terminated_scen": 0
+   }
+  },
+  "3": {
+   "name": "dual_sp260_Kc0.1_ti20_Km0.002_b15",
+   "validation": {
+    "viol_rate": 2.8333333333333335,
+    "fa_rate": 2.8333333333333335,
+    "methane": 1849.4803551803122,
+    "steps": 600,
+    "zero_scen": 5,
+    "terminated_scen": 0
+   },
+   "test": {
+    "viol_rate": 9.777777777777779,
+    "fa_rate": 9.777777777777779,
+    "methane": 1994.9083705121543,
+    "zero_scen": 11,
+    "terminated_scen": 0
+   }
+  },
+  "5": {
+   "name": "dual_sp300_Kc0.1_ti20_Km0.008_b90",
+   "validation": {
+    "viol_rate": 5.0,
+    "fa_rate": 5.0,
+    "methane": 1865.3097232113842,
+    "steps": 600,
+    "zero_scen": 4,
+    "terminated_scen": 0
+   },
+   "test": {
+    "viol_rate": 22.27777777777778,
+    "fa_rate": 22.27777777777778,
+    "methane": 2035.9587575849237,
+    "zero_scen": 11,
+    "terminated_scen": 0
+   }
+  },
+  "10": {
+   "name": "dual_sp380_Kc0.05_ti20_Km0.03_b40",
+   "validation": {
+    "viol_rate": 9.5,
+    "fa_rate": 9.5,
+    "methane": 1893.586600344105,
+    "steps": 600,
+    "zero_scen": 4,
+    "terminated_scen": 0
+   },
+   "test": {
+    "viol_rate": 38.166666666666664,
+    "fa_rate": 38.166666666666664,
+    "methane": 2122.3922102408687,
+    "zero_scen": 11,
+    "terminated_scen": 0
+   }
+  }
+ },
+ "G1": {
+  "on": {
+   "runs": 46,
+   "zero_on_all_test": 0,
+   "meet_budget": 0,
+   "any_termination": 0,
+   "median_methane": 1729.766120437229,
+   "ci": [
+    1673.608982654819,
+    1788.4990615163556
+   ],
+   "median_fa_rate": 0.41666666666666663,
+   "dominate_selected_conventional": 0,
+   "median_zero_scen": 27.0
+  },
+  "off": {
+   "runs": 84,
+   "zero_on_all_test": 29,
+   "meet_budget": 29,
+   "any_termination": 0,
+   "median_methane": 1236.883854487333,
+   "ci": [
+    952.0763036917132,
+    1428.2359546376583
+   ],
+   "median_fa_rate": 0.16666666666666666,
+   "dominate_selected_conventional": 0,
+   "median_zero_scen": 29.0
+  },
+  "all": {
+   "runs": 130,
+   "zero_on_all_test": 29,
+   "meet_budget": 29,
+   "any_termination": 0,
+   "median_methane": 1439.690225127712,
+   "ci": [
+    1138.3980290116046,
+    1708.1875084310414
+   ],
+   "median_fa_rate": 0.2777777777777778,
+   "dominate_selected_conventional": 0,
+   "median_zero_scen": 28.0
+  }
+ },
+ "G2": {
+  "on": {
+   "runs": 100,
+   "zero_on_all_test": 0,
+   "meet_budget": 87,
+   "any_termination": 0,
+   "median_methane": 1755.2750059434463,
+   "ci": [
+    1717.0559296192882,
+    1796.0118065864776
+   ],
+   "median_fa_rate": 0.5,
+   "dominate_selected_conventional": 0,
+   "median_zero_scen": 26.0
+  },
+  "off": {
+   "runs": 40,
+   "zero_on_all_test": 10,
+   "meet_budget": 38,
+   "any_termination": 0,
+   "median_methane": 1356.8341181045666,
+   "ci": [
+    1139.6296448632613,
+    1454.6227287217919
+   ],
+   "median_fa_rate": 0.25,
+   "dominate_selected_conventional": 0,
+   "median_zero_scen": 28.5
+  },
+  "all": {
+   "runs": 140,
+   "zero_on_all_test": 10,
+   "meet_budget": 125,
+   "any_termination": 0,
+   "median_methane": 1724.4798488122024,
+   "ci": [
+    1564.1750884194576,
+    1769.4885797916888
+   ],
+   "median_fa_rate": 0.4444444444444444,
+   "dominate_selected_conventional": 0,
+   "median_zero_scen": 27.0
+  }
+ }
+}

@@ -32,6 +32,7 @@ from matplotlib.legend_handler import HandlerTuple
 import numpy as np
 
 from build_tables import CORRECTED, DATA, WEIGHTS, envelope
+import figstyle
 
 # The manuscript keeps its figures in img/; a path given on the command
 # line is used as-is.
@@ -96,6 +97,7 @@ plt.rcParams.update({
     'savefig.bbox': 'tight',
     'savefig.pad_inches': 0.02,
 })
+figstyle.apply()
 
 
 def load_reward():
@@ -319,7 +321,7 @@ def _draw_frontier(ax, B, E, R, legend):
     # them reads as a smooth frontier instead.
     ax.plot([e[0] for e in E], [e[1] for e in E],
             c=C_ENV, lw=1.4, zorder=3,
-            label=f'Conventional Pareto envelope\n({len(E)} supporting points)')
+            label=f'Conventional envelope ({len(E)} points)')
     ax.scatter([e[0] for e in E], [e[1] for e in E],
                s=4.5, c=C_ENV, marker='o', linewidths=0, zorder=4)
 
@@ -334,7 +336,7 @@ def _draw_frontier(ax, B, E, R, legend):
         xs = [r['viol'] for k in keys for r in R.get(k, [])]
         ys = [r['ch4'] for k in keys for r in R.get(k, [])]
         ax.scatter(xs, ys, s=11, c=colour, marker=marker, alpha=0.38,
-                   linewidths=0, zorder=2, label=f'{name} (n={len(xs)})')
+                   linewidths=0, zorder=2, label=f'{name} (n = {len(xs)})')
 
     # Individual runs of the two classes overlap heavily, and the claim the
     # section makes is about family medians rather than about single runs.
@@ -386,10 +388,10 @@ def _draw_frontier(ax, B, E, R, legend):
         # the full panel width, which a corner anchored to the frame does
         # not leave it, and the region below the cloud carries no data.
         ax.legend([tuple(conv_handles)] + h + [med],
-                  [f'Conventional configurations ({len(B)})'] + lb
+                  [f'Conventional configurations (n = {len(B)})'] + lb
                   + ['Family median'],
                   loc='lower center', bbox_to_anchor=(0.5, -0.02),
-                  frameon=False, ncol=1, fontsize=6.2,
+                  frameon=False, ncol=1, fontsize=figstyle.TEXT,
                   handletextpad=0.5, labelspacing=0.42,
                   handler_map={tuple: HandlerTuple(ndivide=None, pad=0.5)})
 
@@ -445,20 +447,20 @@ def _draw_zero(ax, E, Rc):
         out_r = md > best
         ax.annotate(f'{fam} ({len(z)})', (md, i),
                     xytext=(6 if out_r else -6, 0),
-                    textcoords='offset points', fontsize=6.5, color=colour,
+                    textcoords='offset points', fontsize=figstyle.TEXT, color=colour,
                     ha='left' if out_r else 'right', va='center', zorder=6,
                     bbox=dict(boxstyle='round,pad=0.14', fc='white',
                               ec='none', alpha=0.78))
 
     ax.set_ylim(-0.7, len(rows) + 0.25)
     ax.set_yticks([])
-    ax.set_xlabel('Mean methane flow at zero violations (m$^3$/d)')
+    ax.set_xlabel(f'Mean methane flow at zero violations ({figstyle.M3D})')
     ax.grid(axis='x', color=C_GRID, lw=0.4, alpha=0.5)
     ax.set_axisbelow(True)
 
-    ax.annotate(f'Best conventional\nconfiguration ({best:.0f})',
+    ax.annotate(f'Best conventional\nconfiguration,\n{best:.0f} {figstyle.M3D}',
                 (best, len(rows) - 0.35), xytext=(-5, 0),
-                textcoords='offset points', fontsize=6.2, color=C_ENV,
+                textcoords='offset points', fontsize=figstyle.TEXT, color=C_ENV,
                 ha='right', va='top', zorder=6,
                 bbox=dict(boxstyle='round,pad=0.18', fc='white', ec='none',
                           alpha=0.82))
@@ -481,15 +483,15 @@ def fig_frontier(out):
 
     _draw_frontier(ax, B, E, R, legend=True)
     ax.set_xlim(left=-1)
-    ax.set_ylabel('Mean methane flow (m$^3$/d)')
+    ax.set_ylabel(figstyle.FLOW)
     ax.set_xlabel('Steps above the soft limit (%)')
-    ax.set_title('(a)', loc='left')
+    figstyle.panel(ax, 'a')
 
     rows, best = _draw_zero(axz, E, Rc)
-    axz.set_title('(b)', loc='left')
+    figstyle.panel(axz, 'b')
 
     p = os.path.join(out, 'fig_frontier.pdf')
-    fig.savefig(p)
+    figstyle.save(fig, p, figstyle.FULL)
     plt.close(fig)
     drawn = ON_POLICY + OFF_POLICY
     npts = sum(len(R.get(k, [])) for k in drawn)
@@ -524,22 +526,22 @@ def fig_tracking(out):
     top = max(v for m in med.values() for v in m.values())
     hi = max(max(targets), top) * 1.06
 
-    groups = [('(a)', PROJECTION, C_ON, 'o'),
-              ('(b)', PID, C_FREE, 's'),
-              ('(c)', DUAL_ASCENT, C_OFF, '^'),
+    groups = [('a', PROJECTION, C_ON, 'o'),
+              ('b', PID, C_FREE, 's'),
+              ('c', DUAL_ASCENT, C_OFF, '^'),
               # Not C_GRID: that is the gridline tone, and a family drawn in
               # it reads as background rather than as data.  The reddish
               # purple is the fourth Okabe-Ito colour, so it stays separable
               # from the other three under deuteranopia and protanopia.
-              ('(d)', OTHER_ONPOLICY, '#CC79A7', 'v')]
+              ('d', OTHER_ONPOLICY, '#CC79A7', 'v')]
 
     # Every panel is squared on the same range, so the diagonal sits at 45
     # degrees in each and the four are directly comparable.
-    fig, axes = plt.subplots(1, 4, figsize=(9.4, 2.9),
-                             sharex=True, sharey=True)
+    fig, axg = plt.subplots(2, 2, figsize=(7.0, 4.9), sharex=True, sharey=True,
+                            gridspec_kw={'wspace': 0.42, 'hspace': 0.22})
+    axes = axg.ravel()
 
     for ax, (title, fams, colour, marker) in zip(axes, groups):
-        ax.set_aspect('equal', adjustable='box')
         ax.fill_between([0, hi], [0, hi], hi, color=C_OFF, alpha=0.05,
                         zorder=0, lw=0)
         ax.plot([0, hi], [0, hi], c=C_ENV, lw=1.0, ls='--', zorder=3)
@@ -573,10 +575,10 @@ def fig_tracking(out):
             pos = max(yv, floor) if not placed else max(yv, placed[-1] + gap)
             placed.append(pos)
             ax.annotate(fam, (xv, yv), xytext=(xv + hi * 0.022, pos),
-                        textcoords='data', fontsize=6, color=colour,
+                        textcoords='data', fontsize=figstyle.TEXT, color=colour,
                         va='center', annotation_clip=False)
 
-        ax.set_title(title, loc='left', fontsize=8)
+        figstyle.panel(ax, title)
         ax.set_xlim(0, hi)
         ax.set_ylim(0, hi)
         ax.set_xticks(targets)
@@ -584,21 +586,24 @@ def fig_tracking(out):
         ax.grid(color=C_GRID, lw=0.4, alpha=0.5)
         ax.set_axisbelow(True)
 
-    axes[0].set_ylabel('Attained violation rate (%)')
-    axes[1].set_xlabel('Specified violation rate (%), from the cost limit')
+    for ax in axg[:, 0]:
+        ax.set_ylabel('Realised violation rate (%)')
+    for ax in axg[1, :]:
+        ax.set_xlabel('Specified violation rate (%)')
+        ax.xaxis.set_tick_params(labelbottom=True)
 
     h = [plt.Line2D([], [], c=C_ENV, lw=1.0, ls='--'),
          plt.Line2D([], [], c=C_ENV, lw=0.9, ls=':', marker='o', ms=3.4,
                     mfc='white', mew=0.9),
          plt.Rectangle((0, 0), 1, 1, color=C_OFF, alpha=0.12)]
-    axes[0].legend(h, ['Exact specification', 'Off-policy family',
-                       'Attained exceeds specified'],
-                   loc='upper left', bbox_to_anchor=(0, -0.20), ncol=3,
+    axg[1, 0].legend(h, ['Realised = specified', 'Off-policy family',
+                       'Realised exceeds specified'],
+                   loc='upper left', bbox_to_anchor=(0, -0.30), ncol=3,
                    frameon=False, handlelength=1.8, handletextpad=0.5,
                    columnspacing=1.6, borderaxespad=0)
 
     p = os.path.join(out, 'fig_tracking.pdf')
-    fig.savefig(p)
+    figstyle.save(fig, p, figstyle.FULL)
     plt.close(fig)
     print(f'fig_tracking.pdf  {len(R)} constrained families in '
           f'{len(groups)} panels, {len(limits)} cost limits, '

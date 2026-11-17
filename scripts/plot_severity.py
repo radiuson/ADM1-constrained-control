@@ -50,6 +50,9 @@ plt.rcParams.update({
     'axes.spines.top': False, 'axes.spines.right': False,
     'figure.dpi': 200, 'savefig.bbox': 'tight', 'savefig.pad_inches': 0.02,
 })
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import figstyle
+figstyle.apply()
 
 
 def colour(fam):
@@ -95,8 +98,8 @@ def panel_concentration(ax, R):
         ax.plot([worst], [yi], 'D', color=c, ms=3.6, zorder=3)
     ax.set_yticks(y)
     ax.set_yticklabels([LABEL[f] for f in ORDER])
-    ax.set_xlabel('Steps above soft limit (%)')
-    ax.set_title('(a)', loc='left')
+    ax.set_xlabel('Steps above the soft limit (%)')
+    figstyle.panel(ax, 'a', x=-0.30)
     ax.grid(axis='x', color=C_GRID, lw=0.4, alpha=0.6)
     ax.set_axisbelow(True)
     ax.margins(y=0.05)
@@ -104,7 +107,7 @@ def panel_concentration(ax, R):
          plt.Line2D([], [], color=C_RULE, marker='s', ls='', ms=3.6,
                     mfc='white', mew=1.0),
          plt.Line2D([], [], color=C_RULE, marker='D', ls='', ms=3.6)]
-    ax.legend(h, ['pooled', 'reachable only', 'worst scenario'],
+    ax.legend(h, ['Pooled', 'Attainable scenarios', 'Worst scenario'],
               loc='upper left', bbox_to_anchor=(0, -0.22), ncol=3,
               frameon=False, handletextpad=0.3, columnspacing=1.2)
 
@@ -121,8 +124,8 @@ def panel_hard(ax, R):
             ax.text(n + 0.6, yi, f'{n}/{len(v)}', va='center', fontsize=7)
     ax.set_yticks(y)
     ax.set_yticklabels([])
-    ax.set_xlabel('Runs of 40')
-    ax.set_title('(b)', loc='left')
+    ax.set_xlabel('Runs crossing the\nhard limit (of 40)')
+    figstyle.panel(ax, 'b')
     ax.set_xlim(0, 30)
     ax.grid(axis='x', color=C_GRID, lw=0.4, alpha=0.6)
     ax.set_axisbelow(True)
@@ -140,16 +143,16 @@ def panel_severity(ax, R):
                    s=10, c=colour(fam), alpha=0.55, linewidths=0, zorder=2)
     # The hard limit measured from the soft limit, which is what excess_max is.
     ax.axhline(HARD_MG - SOFT_MG, color=C_RULE, lw=1.0, ls='--', zorder=3)
-    ax.text(0.02, HARD_MG - SOFT_MG, 'hard limit', va='bottom', ha='left',
-            fontsize=7, transform=ax.get_yaxis_transform())
+    ax.text(0.02, HARD_MG - SOFT_MG, 'Hard limit (1500 mg HAc-eq/L)', va='bottom',
+            ha='left', fontsize=figstyle.TEXT, transform=ax.get_yaxis_transform())
     ax.set_xlabel('Longest excursion (steps)')
     ax.set_ylabel('Peak excess over the soft limit (mg HAc-eq/L)')
-    ax.set_title('(c)', loc='left')
+    figstyle.panel(ax, 'c')
     ax.grid(color=C_GRID, lw=0.4, alpha=0.5)
     ax.set_axisbelow(True)
     h = [plt.Line2D([], [], color=c, marker='o', ls='', ms=4)
          for c in (C_ON, C_OFF, C_FREE)]
-    ax.legend(h, ['on-policy', 'off-policy', 'gradient-free'],
+    ax.legend(h, ['On-policy', 'Off-policy', 'Gradient-free'],
               loc='upper left', frameon=False, handletextpad=0.3,
               labelspacing=0.3)
 
@@ -166,7 +169,7 @@ def main():
     panel_severity(fig.add_subplot(gs[2]), R)
 
     p = os.path.join(out, 'fig_severity.pdf')
-    fig.savefig(p)
+    figstyle.save(fig, p, figstyle.FULL)
     plt.close(fig)
 
     breach = {f: sum(1 for x in R[f] if x.get('viol_hard', 0) > 0)

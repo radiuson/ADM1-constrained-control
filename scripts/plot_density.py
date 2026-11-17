@@ -55,6 +55,8 @@ plt.rcParams.update({
     'axes.spines.top': False, 'axes.spines.right': False,
     'figure.dpi': 200, 'savefig.bbox': 'tight', 'savefig.pad_inches': 0.02,
 })
+import figstyle
+figstyle.apply()
 
 
 def envelopes():
@@ -186,9 +188,9 @@ def panel_shift(ax, R, dense_env, sparse_env):
         c = C_ON if a_ in ON else (C_OFF if a_ in OFF else '#009E73')
         flip = (d < 0) != (sp < 0)
         if d < lim[0]:                       # A2C, off the left edge
-            ax.annotate(f'{LABEL[a_]} at ({d:.0f}, {sp:.0f})',
+            ax.annotate(f'{LABEL[a_]}: {d:.0f}, {sp:.0f}'.replace('-', '\u2212'),
                         xy=(lim[0] + 1, sp), xytext=(lim[0] + 12, sp + 26),
-                        fontsize=6.2, color=c, va='center', ha='left',
+                        fontsize=figstyle.TEXT, color=c, va='center', ha='left',
                         arrowprops=dict(arrowstyle='-|>', lw=0.7, color=c,
                                         mutation_scale=6))
             continue
@@ -198,7 +200,7 @@ def panel_shift(ax, R, dense_env, sparse_env):
         dx, dy = OFFS.get(a_, (9, 0))
         ha = 'center' if dx == 0 else ('left' if dx > 0 else 'right')
         ax.annotate(LABEL[a_], (d, sp), xytext=(dx, dy),
-                    textcoords='offset points', fontsize=6.2, color=c,
+                    textcoords='offset points', fontsize=figstyle.TEXT, color=c,
                     va='center', ha=ha)
 
     # The quadrant that carries the point: above the sparse envelope and
@@ -209,8 +211,8 @@ def panel_shift(ax, R, dense_env, sparse_env):
 
     ax.set_xlim(lim[0], 22)
     ax.set_ylim(-110, 60)
-    ax.set_xlabel('Difference from full envelope (m$^3$/d)')
-    ax.set_ylabel('Difference from static-multiplier\nenvelope (m$^3$/d)')
+    ax.set_xlabel(f'Difference from full envelope ({figstyle.M3D})')
+    ax.set_ylabel(f'Difference from static-multiplier\nenvelope ({figstyle.M3D})')
     ax.grid(color=C_GRID, lw=0.4, alpha=0.5)
     ax.set_axisbelow(True)
     return pts
@@ -225,11 +227,11 @@ def main():
 
     # The conventional cloud and its envelope are already drawn in the
     # frontier figure, so only the paired comparison is kept here.
-    fig = plt.figure(figsize=(3.5, 3.25))
+    fig = plt.figure(figsize=(3.4, 3.0))
     pts = panel_shift(fig.add_subplot(1, 1, 1), R, dense_env, sparse_env)
 
     p = os.path.join(out, 'fig_density.pdf')
-    fig.savefig(p)
+    figstyle.save(fig, p, figstyle.COLUMN)
     plt.close(fig)
 
     flips = [a for d, s, a in pts if (d < 0) != (s < 0)]

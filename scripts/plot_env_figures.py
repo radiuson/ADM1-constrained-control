@@ -36,6 +36,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from plot_figures import (C_CONV, C_ENV, C_FREE, C_OFF, C_ON, CMDP_OFF,
                           EPISODE_STEPS, PAPER, load_cmdp, load_reward)
 from build_tables import envelope
+import figstyle
 
 # Written by scenario_traces.py.
 TRACES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -189,7 +190,7 @@ def fig_scenarios(out):
         return
     T = json.load(open(TRACES))
 
-    fig, ax = plt.subplots(1, 1, figsize=(5.6, 3.25))
+    fig, ax = plt.subplots(1, 1, figsize=(3.4, 2.3))
 
     # -- VFA under the maximum corner ---------------------------------------
     # The text bounds each scenario by the maximum-feed corner, so that is the
@@ -221,16 +222,17 @@ def fig_scenarios(out):
                     color=cols[key], zorder=5)
             ax.annotate(f'day {d[-1]}', xy=(d[-1], v[-1]),
                         xytext=(d[-1] + 1.5, v[-1] * 0.80),
-                        fontsize=6.2, color=cols[key], ha='left', va='top')
+                        fontsize=figstyle.TEXT, color=cols[key], ha='left', va='top')
 
     ax.axhline(VFA_SOFT_MG, color=C_SOFT, linewidth=1.1, linestyle='--',
                zorder=2)
     ax.axhline(VFA_HARD_MG, color=C_HARD, linewidth=1.1, linestyle='--',
                zorder=2)
-    ax.text(59.4, VFA_SOFT_MG * 1.08, 'soft 300', ha='right', va='bottom',
-            fontsize=6.6, color=C_SOFT)
-    ax.text(59.4, VFA_HARD_MG * 1.03, 'hard 1500', ha='right', va='bottom',
-            fontsize=6.6, color=C_HARD)
+    # Named in the right margin, where no trace runs.
+    ax.text(60.8, VFA_SOFT_MG, 'Soft\nlimit', ha='left', va='center',
+            fontsize=figstyle.TEXT, color=C_SOFT, linespacing=1.0)
+    ax.text(60.8, VFA_HARD_MG, 'Hard\nlimit', ha='left', va='center',
+            fontsize=figstyle.TEXT, color=C_HARD, linespacing=1.0)
 
     ax.set_yscale('log')
     ax.set_ylim(38, 2600)
@@ -243,13 +245,12 @@ def fig_scenarios(out):
     # No title and no marker notes drawn on the figure: what the traces show,
     # and what the two markers mean, is the caption's job.
     ax.tick_params(direction='in', top=False, right=False, length=3)
-    ax.legend(fontsize=6.3, loc='lower center', frameon=True, framealpha=0.95,
-              edgecolor='#CCCCCC', ncol=3, handlelength=1.5,
-              columnspacing=1.0, labelspacing=0.3, borderpad=0.45,
-              bbox_to_anchor=(0.5, -0.015))
+    ax.legend(fontsize=figstyle.TEXT, loc='upper center', frameon=False,
+              ncol=3, handlelength=1.8, columnspacing=1.0, labelspacing=0.3,
+              bbox_to_anchor=(0.45, -0.24))
 
     p = os.path.join(out, 'fig_scenarios.pdf')
-    fig.savefig(p)
+    figstyle.save(fig, p, figstyle.COLUMN)
     plt.close(fig)
     unreach = sum(1 for k, _, _ in SCEN if max(T[k]['max']['vfa']) < VFA_SOFT_MG)
     print(f'fig_scenarios.pdf  {len(SCEN)} scenarios, {unreach} cannot reach '

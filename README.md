@@ -2,8 +2,8 @@
 
 Code and per-run evaluation records for
 
-> *How Permitted Violation Rates and Conventional-Reference Composition Shape
-> Reinforcement-Learning Performance in Anaerobic Digestion Control*
+> *Reinforcement Learning for Anaerobic Digestion Control under Violation
+> Budgets: Benchmarking against Densely Tuned Conventional Control*
 
 The benchmark compares reinforcement learning with conventional control on a
 plant-anchored 38-state ADM1 digester, on the axis operators trade along:
@@ -58,9 +58,10 @@ Run the scripts from the repository root. Figures are written to `figures/`.
 | Peak VFA during evaluation | `scripts/evaluation_vfa_peak.py` |
 | Off-policy policy stochasticity | `scripts/offpolicy_stochasticity.py` |
 | Single-loop PI gain identification | `scripts/recover_pi_gains.py` |
-| Objective-aligned reward arm (Experiment A) | `scripts/export_figure_data.py`, `scripts/experiment_a_pairs.py` |
+| Auxiliary reward ablation | `scripts/export_figure_data.py`, `scripts/experiment_a_pairs.py` |
+| Independent-disturbance evaluation | `scripts/independent_eval_intervals.py`, `scripts/independent_eval_oracle.py`, `scripts/independent_eval_deployable.py`, `scripts/plot_indep.py` |
 | Scenario profiles | `scripts/scenario_traces.py`, `scripts/plot_env_figures.py` |
-| Frontier, tracking | `scripts/plot_figures.py`, `scripts/plot_frontier_dual.py` |
+| Frontier, tracking | `scripts/plot_figures.py` |
 | Excursion severity | `scripts/plot_severity.py` |
 | Reference density | `scripts/plot_density.py` |
 | Conventional actuator range | `scripts/plot_range.py` |
@@ -68,12 +69,37 @@ Run the scripts from the repository root. Figures are written to `figures/`.
 | Simulated against recorded VFA and alkalinity | `scripts/vfa_scale_comparison.py`, `scripts/alkalinity_comparison.py` |
 | Discretisation check | `scripts/discretisation_check.py` |
 
-Experiment A:
+Auxiliary reward ablation:
 
 ```bash
 python3 scripts/export_figure_data.py figdata/ experiment_A
 python3 scripts/experiment_a_pairs.py experiment_A figdata/
 ```
+
+### Independent-disturbance evaluation
+
+`results_independent/` holds the scenarios, the selected conventional tunings
+and the per-scenario test records of the 195 frozen constrained policies;
+`PREREGISTRATION.md` gives the rules fixed before any result. The reported
+numbers rebuild from these records:
+
+```bash
+python3 scripts/independent_eval_intervals.py   # medians, intervals, rank correlation
+python3 scripts/independent_eval_oracle.py results_independent
+python3 scripts/independent_eval_deployable.py results_independent
+python3 scripts/plot_indep.py                   # fig_indep -> figures/
+```
+
+`scripts/independent_eval.py` is the full pipeline (scenario generation,
+screening, conventional selection, test runs); its learned-policy stage needs
+the trained weights, which are not distributed.
+
+### Figures
+
+Every figure is drawn at its printed width (89 or 184 mm) with 8 pt axis labels
+and 7 pt text, using the shared settings in `scripts/figstyle.py`.
+`scripts/plot_env_figures.py` reads `figures/scenario_traces.json`, written by
+`scripts/scenario_traces.py`.
 
 ### Plant record
 
@@ -102,7 +128,8 @@ The default is `data/muscatine/` inside the repository.
 | `paper_data/evcmdp/` | 563 | constrained runs |
 | `results_lowviol/` | 168 | penalty weights 10 and 20 |
 | `results_b600k/` | 24 | 600k-step training |
-| `experiment_A/` | 2 files | objective-aligned arm and its paired control |
+| `experiment_A/` | 2 files | auxiliary reward ablation and its paired control |
+| `results_independent/` | 195 runs | independent-disturbance evaluation |
 
 Each record carries the run's mean methane flow, its pooled and per-scenario
 violation rates and the excursion-severity fields computed by
@@ -149,7 +176,8 @@ evaluation/   evaluation of learned and conventional controllers, severity
 scripts/      analyses and figures
 paper_data/   per-run evaluation records
 results_*/    dual-loop grid and additional training arms
-experiment_A/ objective-aligned reward arm
+experiment_A/ auxiliary reward ablation
+results_independent/ independent-disturbance evaluation
 ```
 
 ## Numerical setup
