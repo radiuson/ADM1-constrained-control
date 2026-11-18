@@ -526,14 +526,14 @@ def fig_tracking(out):
     top = max(v for m in med.values() for v in m.values())
     hi = max(max(targets), top) * 1.06
 
-    groups = [('a', PROJECTION, C_ON, 'o'),
-              ('b', PID, C_FREE, 's'),
-              ('c', DUAL_ASCENT, C_OFF, '^'),
-              # Not C_GRID: that is the gridline tone, and a family drawn in
-              # it reads as background rather than as data.  The reddish
-              # purple is the fourth Okabe-Ito colour, so it stays separable
-              # from the other three under deuteranopia and protanopia.
-              ('d', OTHER_ONPOLICY, '#CC79A7', 'v')]
+    # Within a panel every family has its own colour and marker, so each line
+    # can be followed to its label; the panels share one Okabe-Ito sequence,
+    # which stays separable under the common colour-vision deficiencies.
+    groups = [('a', PROJECTION), ('b', PID), ('c', DUAL_ASCENT),
+              ('d', OTHER_ONPOLICY)]
+    FAMILY_COLOURS = ('#0072B2', '#D55E00', '#009E73', '#CC79A7',
+                      '#E69F00', '#000000')
+    FAMILY_MARKERS = ('o', 's', '^', 'D', 'v', 'P')
 
     # Every panel is squared on the same range, so the diagonal sits at 45
     # degrees in each and the four are directly comparable.
@@ -541,26 +541,25 @@ def fig_tracking(out):
                             gridspec_kw={'wspace': 0.42, 'hspace': 0.22})
     axes = axg.ravel()
 
-    for ax, (title, fams, colour, marker) in zip(axes, groups):
+    for ax, (title, fams) in zip(axes, groups):
         ax.fill_between([0, hi], [0, hi], hi, color=C_OFF, alpha=0.05,
                         zorder=0, lw=0)
         ax.plot([0, hi], [0, hi], c=C_ENV, lw=1.0, ls='--', zorder=3)
 
         drawn, ends = 0, []
-        for fam in fams:
-            if fam not in med:
-                continue
+        for k, fam in enumerate(f for f in fams if f in med):
+            colour, marker = FAMILY_COLOURS[k], FAMILY_MARKERS[k]
             cs = sorted(med[fam])
             xs = [c / EPISODE_STEPS * 100 for c in cs]
             ys = [med[fam][c] for c in cs]
-            # Off-policy families are drawn open, so the class stays legible
-            # within a panel that is otherwise one colour.
+            # Off-policy families are drawn open on dotted lines, so the
+            # class can be read without the legend.
             off = fam in CMDP_OFF
-            ax.plot(xs, ys, c=colour, lw=0.9, alpha=0.8, zorder=2,
+            ax.plot(xs, ys, c=colour, lw=1.0, alpha=0.9, zorder=2,
                     marker=marker, ms=3.4,
                     mfc='white' if off else colour, mew=0.9,
                     ls=':' if off else '-')
-            ends.append((ys[-1], xs[-1], fam))
+            ends.append((ys[-1], xs[-1], fam, colour))
             drawn += 1
 
         # Each line is named at its end, which three panels leave room for
@@ -571,12 +570,14 @@ def fig_tracking(out):
         ends.sort()
         gap, placed = hi * 0.062, []
         floor = hi * 0.022
-        for yv, xv, fam in ends:
+        for yv, xv, fam, colour in ends:
             pos = max(yv, floor) if not placed else max(yv, placed[-1] + gap)
             placed.append(pos)
             ax.annotate(fam, (xv, yv), xytext=(xv + hi * 0.022, pos),
                         textcoords='data', fontsize=figstyle.TEXT, color=colour,
-                        va='center', annotation_clip=False)
+                        va='center', annotation_clip=False, zorder=5,
+                        bbox=dict(boxstyle='square,pad=0.08', fc='white',
+                                  ec='none'))
 
         figstyle.panel(ax, title)
         ax.set_xlim(0, hi)
@@ -587,17 +588,17 @@ def fig_tracking(out):
         ax.set_axisbelow(True)
 
     for ax in axg[:, 0]:
-        ax.set_ylabel('Realised violation rate (%)')
+        ax.set_ylabel('Violation rate (%)')
     for ax in axg[1, :]:
-        ax.set_xlabel('Specified violation rate (%)')
+        ax.set_xlabel('Violation budget (%)')
         ax.xaxis.set_tick_params(labelbottom=True)
 
     h = [plt.Line2D([], [], c=C_ENV, lw=1.0, ls='--'),
          plt.Line2D([], [], c=C_ENV, lw=0.9, ls=':', marker='o', ms=3.4,
                     mfc='white', mew=0.9),
          plt.Rectangle((0, 0), 1, 1, color=C_OFF, alpha=0.12)]
-    axg[1, 0].legend(h, ['Realised = specified', 'Off-policy family',
-                       'Realised exceeds specified'],
+    axg[1, 0].legend(h, ['Rate = budget', 'Off-policy family',
+                       'Budget exceeded'],
                    loc='upper left', bbox_to_anchor=(0, -0.30), ncol=3,
                    frameon=False, handlelength=1.8, handletextpad=0.5,
                    columnspacing=1.6, borderaxespad=0)

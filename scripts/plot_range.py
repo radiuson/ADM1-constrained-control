@@ -123,10 +123,12 @@ def main():
     ax.scatter([b['viol'] for b in extra], [b['ch4'] for b in extra],
                s=22, facecolors='none', edgecolors=C_WIDE, linewidths=1.0,
                zorder=2, label=f'Multiplier 1.5 and 1.7 (n = {len(extra)})')
-    ax.plot([p[0] for p in Ew], [p[1] for p in Ew], color=C_WIDE, lw=2.0,
-            ls='-', alpha=0.55, zorder=3,
+    # The two envelopes coincide, so the wider one is drawn as a broad pale
+    # band under the restricted one; both stay visible where they overlap.
+    ax.plot([p[0] for p in Ew], [p[1] for p in Ew], color=C_WIDE, lw=4.5,
+            ls='-', alpha=0.45, zorder=3, solid_capstyle='butt',
             label=f'Wider-sweep envelope ({len(Ew)} points)')
-    ax.plot([p[0] for p in Ec], [p[1] for p in Ec], color=C_COMMON, lw=1.3,
+    ax.plot([p[0] for p in Ec], [p[1] for p in Ec], color=C_COMMON, lw=1.1,
             zorder=4, label=f'Restricted-sweep envelope ({len(Ec)} points)')
     # Any point where the two curves part company; with the dual-loop
     # family in the set there are none, and the legend says so.
@@ -141,7 +143,9 @@ def main():
     # The whole conventional cloud in this window, not a crop of it:
     # cutting the axis at 1400 hid 54 of the 149 points without
     # saying so, and the lowest sits at 713.
-    ax.set_ylim(650, 1850)
+    # The top is set by the envelope inside the window, so it is not cut off.
+    top = max(p[1] for p in Ec + Ew if p[0] <= 2.5)
+    ax.set_ylim(650, top + 60)
     ax.grid(axis='y', color=C_GRID, lw=0.4, alpha=0.5)
     ax.set_axisbelow(True)
     ax.legend(loc='lower right', frameon=False, labelspacing=0.3,

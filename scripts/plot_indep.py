@@ -77,7 +77,7 @@ def main(d, out):
         Line2D([], [], ls='', marker='o', ms=3, color=C_CONV, label='Conventional configurations'),
         Line2D([], [], color=C_ENV, lw=1.2, label='Envelope on test scenarios'),
         Line2D([], [], ls='', marker='D', ms=4.5, mfc='white', mec='black',
-               label='Tunings selected on validation set'),
+               label='Configurations selected on validation set'),
         Line2D([], [], ls='', marker='o', ms=4, color=C_ON, label='On-policy, $d=0.6$'),
         Line2D([], [], ls='', marker='^', ms=4, color=C_OFF, label='Off-policy, $d=0.6$'),
     ], loc='lower right', frameon=False, handletextpad=0.4, borderaxespad=0.2)

@@ -195,9 +195,12 @@ def fig_scenarios(out):
     # -- VFA under the maximum corner ---------------------------------------
     # The text bounds each scenario by the maximum-feed corner, so that is the
     # trace that shows which scenarios can reach the limit at all.  The five
-    # loading levels take one ramp of colour so the ordering by load reads off
-    # the figure; the two perturbation cases are deliberately outside it.
-    LOAD_COLS = ['#BBD8EE', '#7FB2D9', '#3D7FB5', '#1C5584', '#0A3355']
+    # loading levels each take their own hue, because a single ramp of blues left
+    # neighbouring loading levels indistinguishable at print size.  Plant
+    # load is black: the two perturbation cases start from it and coincide
+    # with it once the perturbation has passed, so they are drawn dashed on
+    # top of it and it shows through the gaps.
+    LOAD_COLS = ['#56B4E9', '#0072B2', '#1A1A1A', '#CC79A7', '#6A2C91']
     cols, dash = {}, {}
     for i, (key, _, _) in enumerate(SCEN[:5]):
         cols[key] = LOAD_COLS[i]
@@ -210,7 +213,7 @@ def fig_scenarios(out):
         v = tr['vfa']
         d = np.arange(1, len(v) + 1)
         ln, = ax.plot(d, v, linewidth=1.35, color=cols[key], label=label,
-                      zorder=3)
+                      zorder=4 if dash[key][0] else 3)
         if dash[key][0]:
             ln.set_dashes(dash[key])
         # A trace that stops short ended on the hard band.  The marker alone
