@@ -388,7 +388,7 @@ def _draw_frontier(ax, B, E, R, legend):
         # the full panel width, which a corner anchored to the frame does
         # not leave it, and the region below the cloud carries no data.
         ax.legend([tuple(conv_handles)] + h + [med],
-                  [f'Conventional configurations (n = {len(B)})'] + lb
+                  [f'Conventional evaluations (n = {len(B)})'] + lb
                   + ['Family median'],
                   loc='lower center', bbox_to_anchor=(0.5, -0.02),
                   frameon=False, ncol=1, fontsize=figstyle.TEXT,
