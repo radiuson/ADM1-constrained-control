@@ -232,8 +232,11 @@ def panel_shift(ax, R, dense_env, sparse_env):
         Line2D([], [], ls='', marker='o', ms=4, color=C_OFF, label='Off-policy'),
         Line2D([], [], ls='', marker='o', ms=4, color='#009E73', label='Gradient-free'),
         Line2D([], [], ls='--', lw=1.0, color='#8a8a8a', label='Same score'),
-    ], loc='lower right', frameon=False, fontsize=figstyle.TEXT,
-       handletextpad=0.4, labelspacing=0.3, borderaxespad=0.3)
+    ], loc='lower right', frameon=True, fancybox=False, edgecolor='#8a8a8a',
+       framealpha=1.0, fontsize=figstyle.TEXT,
+       handletextpad=0.4, labelspacing=0.3, borderaxespad=0.4)
+    leg = ax.get_legend()
+    leg.get_frame().set_linewidth(0.6)
     ax.set_xlim(lim[0], 22)
     ax.set_ylim(-110, 60)
     ax.set_xlabel(f'Difference from full envelope ({figstyle.M3D})')
