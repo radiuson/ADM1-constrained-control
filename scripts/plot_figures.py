@@ -80,7 +80,7 @@ C_CONV = '#8E8E8E'
 # the rule-based set.  One grey for all of them hides that, so each is drawn
 # with its own marker in the one tone.
 CONV_KINDS = (('dual', 'D', 'Dual-loop PI'),
-              ('pi', 's', 'PI loops'),
+              ('pi', 's', 'Single-loop PI'),
               ('const', 'P', 'Constant feed'),
               ('rule', 'X', 'Rule-based'))
 
@@ -313,8 +313,8 @@ def _draw_frontier(ax, B, E, R, legend):
                    c=C_CONV, marker=mk, linewidths=0,
                    alpha=0.16 if small else 0.45, zorder=1)
         conv_handles.append(
-            plt.Line2D([], [], marker=mk, ls='', ms=3.4, mfc=C_CONV,
-                       mec=C_CONV, alpha=0.75))
+            (plt.Line2D([], [], marker=mk, ls='', ms=3.4, mfc=C_CONV,
+                        mec=C_CONV, alpha=0.75), f'{name} ({len(sub)})'))
     # The envelope is a running maximum, so it is supported at the
     # configurations that set a new record and interpolated between them.
     # Marking those points shows that structure, which a plain line through
@@ -390,11 +390,15 @@ def _draw_frontier(ax, B, E, R, legend):
         # Placed inside the axes at the foot: the long envelope entry needs
         # the full panel width, which a corner anchored to the frame does
         # not leave it, and the region below the cloud carries no data.
-        ax.legend([tuple(conv_handles)] + h + [med],
-                  [f'Conventional evaluations (n = {len(B)})'] + lb
-                  + ['Family median'],
-                  loc='lower center', bbox_to_anchor=(0.5, -0.02),
-                  frameon=False, ncol=1, fontsize=figstyle.TEXT,
+        # Each conventional family is named with its own marker, so the four
+        # grey symbols can be told apart; the family-median entry says how
+        # the marker is placed, which is not the median of the plotted runs.
+        ax.legend([c[0] for c in conv_handles] + h + [med],
+                  [c[1] for c in conv_handles] + lb
+                  + ['Family median $D$ at median rate'],
+                  loc='lower center', bbox_to_anchor=(0.57, -0.02),
+                  frameon=False, ncol=2, fontsize=figstyle.TEXT,
+                  columnspacing=0.8,
                   handletextpad=0.5, labelspacing=0.42,
                   handler_map={tuple: HandlerTuple(ndivide=None, pad=0.5)})
 

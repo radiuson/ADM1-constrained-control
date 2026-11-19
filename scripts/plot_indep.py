@@ -13,6 +13,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+import matplotlib.ticker
 from matplotlib.lines import Line2D
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +24,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 C_ON, C_OFF = '#0072B2', '#D55E00'
 C_ENV, C_GRID, C_CONV = '#333333', '#BBBBBB', '#8E8E8E'
 
-XMAX = 5.0
+# Panel (a) runs to the largest rate of the configurations selected on the
+# validation set, so their test-set rates, the panel's main finding, are all
+# drawn.  A symmetric-log axis keeps the low-violation region, where the
+# learned runs and the envelope's steep rise sit, readable on the same panel.
+XMAX = 45.0
+LINTHRESH = 1.0
 
 
 def pooled(per, ids):
@@ -68,7 +74,11 @@ def main(d, out):
         k = v <= XMAX
         a.scatter(v[k], c[k], s=13, marker=mk, facecolor=col, edgecolor='white',
                   lw=0.3, alpha=0.85, zorder=5)
-    a.set_xlim(-0.1, XMAX)
+    a.set_xscale('symlog', linthresh=LINTHRESH, linscale=1.0)
+    a.set_xlim(0, XMAX)
+    a.set_xticks([0, 0.5, 1, 2, 5, 10, 20, 40])
+    a.set_xticklabels(['0', '0.5', '1', '2', '5', '10', '20', '40'])
+    a.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     a.set_ylim(400, 2150)
     a.set_xlabel('Steps above the soft limit, test scenarios (%)')
     a.set_ylabel(figstyle.FLOW)
