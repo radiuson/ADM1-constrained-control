@@ -173,12 +173,8 @@ def panel_shift(ax, R, dense_env, sparse_env):
     # the panel is drawn at the scale the other nine share and A2C is
     # written in at the edge it falls beyond.
     lim = (-185, 60)
-    ax.plot([-185, 16], [-185, 16], ':', color='#8a8a8a', lw=1.0,
+    ax.plot([-185, 16], [-185, 16], '--', color='#8a8a8a', lw=1.0,
             zorder=1)
-    # Name the diagonal on the line itself, in the empty lower right.
-    ax.text(-52, -76, 'Unchanged by reference', color='#6a6a6a',
-            fontsize=figstyle.TEXT, rotation=45, rotation_mode='anchor',
-            transform_rotates_text=True, ha='center', va='bottom', zorder=2)
 
     # At single-column width there is no room for a label column beside
     # the cloud, so each family is named on its own marker; the offsets
@@ -217,6 +213,16 @@ def panel_shift(ax, R, dense_env, sparse_env):
                                alpha=0.055, lw=0, zorder=0))
 
 
+    # The classes and the diagonal are named in a legend in the empty lower
+    # right, rather than as text along the line.
+    from matplotlib.lines import Line2D
+    ax.legend(handles=[
+        Line2D([], [], ls='', marker='o', ms=4, color=C_ON, label='On-policy'),
+        Line2D([], [], ls='', marker='o', ms=4, color=C_OFF, label='Off-policy'),
+        Line2D([], [], ls='', marker='o', ms=4, color='#009E73', label='Gradient-free'),
+        Line2D([], [], ls='--', lw=1.0, color='#8a8a8a', label='Same score'),
+    ], loc='lower right', frameon=False, fontsize=figstyle.TEXT,
+       handletextpad=0.4, labelspacing=0.3, borderaxespad=0.3)
     ax.set_xlim(lim[0], 22)
     ax.set_ylim(-110, 60)
     ax.set_xlabel(f'Difference from full envelope ({figstyle.M3D})')
