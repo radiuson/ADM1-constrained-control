@@ -78,6 +78,8 @@ def main(d, out):
         a.scatter(v[k], c[k], s=13, marker=mk, facecolor=col, edgecolor='white',
                   lw=0.3, alpha=0.85, zorder=5)
     a.set_xscale('symlog', linthresh=LINTHRESH, linscale=1.0)
+    # Mark where the axis turns from linear to logarithmic.
+    a.axvline(LINTHRESH, color=C_GRID, lw=0.7, ls=':', zorder=0)
     a.set_xlim(0, XMAX)
     a.set_xticks([0, 0.5, 1, 2, 5, 10, 20, 40])
     a.set_xticklabels(['0', '0.5', '1', '2', '5', '10', '20', '40'])
@@ -90,7 +92,7 @@ def main(d, out):
         Line2D([], [], ls='', marker='o', ms=3, color=C_CONV, label='Conventional configurations'),
         Line2D([], [], color=C_ENV, lw=1.2, label='Envelope on test scenarios'),
         Line2D([], [], ls='', marker='D', ms=4.5, mfc='white', mec='black',
-               label='Configurations selected on validation set'),
+               label='Selected on validation set (label: validation budget)'),
         Line2D([], [], ls='', marker='o', ms=4, color=C_ON, label='On-policy, $d=0.6$'),
         Line2D([], [], ls='', marker='^', ms=4, color=C_OFF, label='Off-policy, $d=0.6$'),
     ], loc='lower right', frameon=False, handletextpad=0.4, borderaxespad=0.2)
