@@ -231,7 +231,7 @@ def panel_shift(ax, R, dense_env, sparse_env):
         Line2D([], [], ls='', marker='o', ms=4, color=C_ON, label='On-policy'),
         Line2D([], [], ls='', marker='o', ms=4, color=C_OFF, label='Off-policy'),
         Line2D([], [], ls='', marker='o', ms=4, color='#009E73', label='Gradient-free'),
-        Line2D([], [], ls='--', lw=1.0, color='#8a8a8a', label='Same score'),
+        Line2D([], [], ls='--', lw=1.0, color='#8a8a8a', label='Equal differences'),
     ], loc='lower right', frameon=True, fancybox=False, edgecolor='#8a8a8a',
        framealpha=1.0, fontsize=figstyle.TEXT,
        handletextpad=0.4, labelspacing=0.3, borderaxespad=0.4)

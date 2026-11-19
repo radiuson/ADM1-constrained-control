@@ -88,14 +88,14 @@ def main(d, out):
     a.set_xticklabels(['0', '0.5', '1', '2', '5', '10', '20', '40'])
     a.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
     a.set_ylim(400, 2150)
-    a.set_xlabel('Steps above the soft limit, test scenarios (%)')
+    a.set_xlabel('Test-scenario violation rate (%)')
     a.set_ylabel(figstyle.FLOW)
     a.grid(axis='y', color=C_GRID, lw=0.4, alpha=0.5)
     a.legend(handles=[
         Line2D([], [], ls='', marker='o', ms=3, color=C_CONV, label='Conventional configurations'),
         Line2D([], [], color=C_ENV, lw=1.2, label='Envelope on test scenarios'),
         Line2D([], [], ls='', marker='D', ms=4.5, mfc='white', mec='black',
-               label='Selected on validation set (label: validation budget)'),
+               label='Validation-selected configurations'),
         Line2D([], [], ls='', marker='o', ms=4, color=C_ON, label='On-policy, $d=0.6$'),
         Line2D([], [], ls='', marker='^', ms=4, color=C_OFF, label='Off-policy, $d=0.6$'),
     ], loc='lower right', frameon=False, handletextpad=0.4, borderaxespad=0.2)
@@ -121,8 +121,8 @@ def main(d, out):
         b.plot([x], [y], mk, ms=8, mfc='none', mec='black', mew=1.3, zorder=6)
     b.set_xlim(*lim)
     b.set_ylim(-420, 120)
-    b.set_xlabel(f'Difference from envelope, original ({figstyle.M3D})')
-    b.set_ylabel(f'Difference from envelope, test ({figstyle.M3D})')
+    b.set_xlabel(f'D in the original benchmark ({figstyle.M3D})')
+    b.set_ylabel(f'D on the test set ({figstyle.M3D})')
     b.legend(handles=[
         Line2D([], [], ls='', marker='o', ms=4, color=C_ON,
                label='Zero violations, original evaluation'),

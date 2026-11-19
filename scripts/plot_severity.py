@@ -107,7 +107,7 @@ def panel_concentration(ax, R):
          plt.Line2D([], [], color=C_RULE, marker='s', ls='', ms=3.6,
                     mfc='white', mew=1.0),
          plt.Line2D([], [], color=C_RULE, marker='D', ls='', ms=3.6)]
-    ax.legend(h, ['Pooled', 'Five scenarios that can exceed the limit', 'Worst scenario'],
+    ax.legend(h, ['Pooled', 'Five scenarios with observed exceedances', 'Worst scenario'],
               loc='upper left', bbox_to_anchor=(0, -0.22), ncol=3,
               frameon=False, handletextpad=0.3, columnspacing=1.2)
 
