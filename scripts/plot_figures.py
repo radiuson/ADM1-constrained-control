@@ -335,8 +335,13 @@ def _draw_frontier(ax, B, E, R, legend):
     for keys, colour, marker, name in classes:
         xs = [r['viol'] for k in keys for r in R.get(k, [])]
         ys = [r['ch4'] for k in keys for r in R.get(k, [])]
+        # Plotted runs and scored runs differ for A2C, half of whose runs
+        # lie beyond the envelope, so the legend gives both counts.
+        lo, hi = E[0][0], E[-1][0]
+        nsc = sum(1 for x in xs if lo <= x <= hi)
         ax.scatter(xs, ys, s=11, c=colour, marker=marker, alpha=0.38,
-                   linewidths=0, zorder=2, label=f'{name} (n = {len(xs)})')
+                   linewidths=0, zorder=2,
+                   label=f'{name} (n = {len(xs)}, {nsc} scored)')
 
     # Individual runs of the two classes overlap heavily, and the claim the
     # section makes is about family medians rather than about single runs.

@@ -79,7 +79,10 @@ def main(d, out):
                   lw=0.3, alpha=0.85, zorder=5)
     a.set_xscale('symlog', linthresh=LINTHRESH, linscale=1.0)
     # Mark where the axis turns from linear to logarithmic.
-    a.axvline(LINTHRESH, color=C_GRID, lw=0.7, ls=':', zorder=0)
+    a.axvline(LINTHRESH, color='#777777', lw=0.8, ls=':', zorder=0)
+    a.text(LINTHRESH, 1.01, 'linear | log', transform=a.get_xaxis_transform(),
+           ha='center', va='bottom', fontsize=figstyle.TEXT - 1, color='#555555',
+           clip_on=False)
     a.set_xlim(0, XMAX)
     a.set_xticks([0, 0.5, 1, 2, 5, 10, 20, 40])
     a.set_xticklabels(['0', '0.5', '1', '2', '5', '10', '20', '40'])

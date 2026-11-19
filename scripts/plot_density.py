@@ -194,7 +194,7 @@ def panel_shift(ax, R, dense_env, sparse_env):
         if d < lim[0]:                       # A2C, off the left edge
             # The two medians rest on different runs: the full envelope
             # scores 20 of A2C's runs and the static-multiplier one 31.
-            ax.annotate(f'{LABEL[a_]}: {d:.0f} on 20 runs,\n{sp:.0f} on 31 runs'.replace('-', '\u2212'),
+            ax.annotate(f'{LABEL[a_]}: {d:.0f} on 20 runs,\n{sp:.0f} on 31 runs,\npaired change +185'.replace('-', '\u2212'),
                         xy=(lim[0] + 1, sp), xytext=(lim[0] + 12, sp + 26),
                         fontsize=figstyle.TEXT, color=c, va='center', ha='left',
                         arrowprops=dict(arrowstyle='-|>', lw=0.7, color=c,
