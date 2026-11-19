@@ -15,8 +15,11 @@ Stages (each writes JSON into <outdir>; later stages read earlier ones):
 
     python3 scripts/independent_eval.py <stage> <outdir> [workers]
 
-The testrl stage needs the trained constrained policies, which are not
-distributed; its output is stored in results_independent/test_rl.json.
+The val, select and oracle stages read figdata/conventional_runs.csv, written
+by `python3 scripts/export_figure_data.py figdata/ experiment_A` (or the
+directory named by FIGDATA). The testrl stage needs the trained constrained
+policies, which are not distributed; its output is stored in
+results_independent/test_rl.json.
 """
 from __future__ import annotations
 
@@ -51,6 +54,12 @@ Q_LO, Q_HI = 41.0, 159.0
 BUDGETS = (0, 1, 3, 5, 10)
 # Written by scripts/export_figure_data.py.
 FD = os.environ.get('FIGDATA', os.path.join(ROOT, 'figdata'))
+
+# Coarse single-loop PI grid added to the candidates: ten setpoints
+# (mg HAc-eq/L), three (Kc, tau_i) pairs and the two multipliers, 60 points.
+PI_SP = (20, 60, 100, 140, 180, 220, 260, 300, 350, 400)
+PI_GAINS = ((0.1, 20), (0.35, 8), (1, 3))
+PI_MULT = (1.1, 1.3)
 SPIKE_VARS = {'lipid': ['X_li', 'S_fa'], 'carbohydrate': ['X_ch'],
               'particulate': ['X_ch', 'X_pr', 'X_li', 'X_xc']}
 
@@ -147,7 +156,6 @@ def conventional_specs():
         else:
             continue
         seen.add(nm)
-    from threshold_sensitivity import PI_SP, PI_GAINS, PI_MULT
     for sp in PI_SP:
         for kc, ti in PI_GAINS:
             for m in PI_MULT:

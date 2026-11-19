@@ -173,8 +173,12 @@ def panel_shift(ax, R, dense_env, sparse_env):
     # the panel is drawn at the scale the other nine share and A2C is
     # written in at the edge it falls beyond.
     lim = (-185, 60)
-    ax.plot([-185, 16], [-185, 16], ':', color=C_GRID, lw=0.9,
+    ax.plot([-185, 16], [-185, 16], ':', color='#8a8a8a', lw=1.0,
             zorder=1)
+    # Name the diagonal on the line itself, in the empty lower right.
+    ax.text(-52, -76, 'Unchanged by reference', color='#6a6a6a',
+            fontsize=figstyle.TEXT, rotation=45, rotation_mode='anchor',
+            transform_rotates_text=True, ha='center', va='bottom', zorder=2)
 
     # At single-column width there is no room for a label column beside
     # the cloud, so each family is named on its own marker; the offsets

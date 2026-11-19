@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""What a pooled violation rate leaves out, in three panels.
+"""What a pooled violation rate leaves out, in two panels.
 
 A rate counts the steps above the soft limit and says nothing about which
 scenario they fall in, how far past the limit they go, or how long they last.
@@ -112,26 +112,6 @@ def panel_concentration(ax, R):
               frameon=False, handletextpad=0.3, columnspacing=1.2)
 
 
-def panel_hard(ax, R):
-    """Runs that cross the hard limit, out of forty."""
-    y = np.arange(len(ORDER))[::-1]
-    for yi, fam in zip(y, ORDER):
-        v = R[fam]
-        n = sum(1 for x in v if x.get('viol_hard', 0) > 0)
-        ax.barh(yi, n, color=colour(fam), height=0.6,
-                alpha=1.0 if n else 0.25)
-        if n:
-            ax.text(n + 0.6, yi, f'{n}/{len(v)}', va='center', fontsize=7)
-    ax.set_yticks(y)
-    ax.set_yticklabels([])
-    ax.set_xlabel('Runs crossing the\nhard limit (of 40)')
-    figstyle.panel(ax, 'b')
-    ax.set_xlim(0, 30)
-    ax.grid(axis='x', color=C_GRID, lw=0.4, alpha=0.6)
-    ax.set_axisbelow(True)
-    ax.margins(y=0.05)
-
-
 def panel_severity(ax, R):
     """Duration against depth, one point per run that leaves the band."""
     for fam in ORDER:
@@ -147,7 +127,7 @@ def panel_severity(ax, R):
             ha='left', fontsize=figstyle.TEXT, transform=ax.get_yaxis_transform())
     ax.set_xlabel('Longest excursion (steps)')
     ax.set_ylabel('Peak excess over the soft limit (mg HAc-eq/L)')
-    figstyle.panel(ax, 'c')
+    figstyle.panel(ax, 'b')
     ax.grid(color=C_GRID, lw=0.4, alpha=0.5)
     ax.set_axisbelow(True)
     h = [plt.Line2D([], [], color=c, marker='o', ls='', ms=4)
@@ -163,10 +143,9 @@ def main():
     R = load()
 
     fig = plt.figure(figsize=(7.4, 3.3))
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.35, 0.55, 1.2], wspace=0.50)
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.0], wspace=0.40)
     panel_concentration(fig.add_subplot(gs[0]), R)
-    panel_hard(fig.add_subplot(gs[1]), R)
-    panel_severity(fig.add_subplot(gs[2]), R)
+    panel_severity(fig.add_subplot(gs[1]), R)
 
     p = os.path.join(out, 'fig_severity.pdf')
     figstyle.save(fig, p, figstyle.FULL)
