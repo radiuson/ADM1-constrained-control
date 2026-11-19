@@ -3,7 +3,7 @@
 Code and per-run evaluation records for
 
 > *Reinforcement Learning for Anaerobic Digestion Control under Violation
-> Budgets: Benchmarking against Densely Tuned Conventional Control*
+> Budgets: A Comparison with Extensively Tuned PI and Rule-Based Controllers*
 
 The benchmark compares reinforcement learning with conventional control on a
 plant-anchored 38-state ADM1 digester, on the axis operators trade along:
