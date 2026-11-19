@@ -508,6 +508,23 @@ def fig_frontier(out):
           f'families, {above} above {best:.0f}')
 
 
+def fixed_horizon_rate(d):
+    """Violation rate over the scheduled 420 steps, r_C in the paper.
+
+    Steps after an early termination count as violations, so a run that
+    ends early is not credited for the days it did not operate.
+    """
+    ps = d.get('per_scenario') or {}
+    if not ps:
+        return d['viol']
+    n = sum(v['steps'] for v in ps.values())
+    full = len(ps) * EPISODE_STEPS
+    if n >= full:
+        return d['viol']
+    viols = sum(v['steps'] * v['viol'] / 100.0 for v in ps.values())
+    return 100.0 * (viols + (full - n)) / full
+
+
 def fig_tracking(out):
     """One panel per dual-update rule, which is what the figure separates on.
 
@@ -524,11 +541,14 @@ def fig_tracking(out):
 
     # Per-family medians at each limit: these are the points the figure plots,
     # and the highest of them sets the panels' common extent.
+    # The figure compares the realised rate with the budget, so it uses the
+    # fixed-horizon rate r_C, which counts every step after an early
+    # termination as a violation, as Table 5 does.
     med = {}
     for fam, rs in R.items():
         by = collections.defaultdict(list)
         for d in rs:
-            by[d['cost_limit']].append(d['viol'])
+            by[d['cost_limit']].append(fixed_horizon_rate(d))
         med[fam] = {c: st.median(v) for c, v in by.items()}
     top = max(v for m in med.values() for v in m.values())
     hi = max(max(targets), top) * 1.06
