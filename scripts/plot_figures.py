@@ -534,8 +534,10 @@ def fig_tracking(out):
     # which stays separable under the common colour-vision deficiencies.
     groups = [('a', PROJECTION), ('b', PID), ('c', DUAL_ASCENT),
               ('d', OTHER_ONPOLICY)]
-    FAMILY_COLOURS = ('#0072B2', '#D55E00', '#009E73', '#CC79A7',
-                      '#E69F00', '#000000')
+    # The Okabe-Ito pink and amber are too light for text on white, so the
+    # fourth and fifth colours are darker shades of the same hues.
+    FAMILY_COLOURS = ('#0072B2', '#D55E00', '#009E73', '#A6448A',
+                      '#B07800', '#000000')
     FAMILY_MARKERS = ('o', 's', '^', 'D', 'v', 'P')
 
     # Every panel is squared on the same range, so the diagonal sits at 45
@@ -558,7 +560,7 @@ def fig_tracking(out):
             # Off-policy families are drawn open on dotted lines, so the
             # class can be read without the legend.
             off = fam in CMDP_OFF
-            ax.plot(xs, ys, c=colour, lw=1.0, alpha=0.9, zorder=2,
+            ax.plot(xs, ys, c=colour, lw=1.2 if off else 1.0, alpha=0.9, zorder=2,
                     marker=marker, ms=3.4,
                     mfc='white' if off else colour, mew=0.9,
                     ls=':' if off else '-')
@@ -576,11 +578,17 @@ def fig_tracking(out):
         for yv, xv, fam, colour in ends:
             pos = max(yv, floor) if not placed else max(yv, placed[-1] + gap)
             placed.append(pos)
-            ax.annotate(fam, (xv, yv), xytext=(xv + hi * 0.022, pos),
+            # A label pushed away from its line end is tied back to it, so
+            # a crowded panel can still be read line by line.
+            lead = abs(pos - yv) > gap * 0.3
+            ax.annotate(fam, (xv, yv), xytext=(xv + hi * 0.06, pos),
                         textcoords='data', fontsize=figstyle.TEXT, color=colour,
                         va='center', annotation_clip=False, zorder=5,
                         bbox=dict(boxstyle='square,pad=0.08', fc='white',
-                                  ec='none'))
+                                  ec='none'),
+                        arrowprops=dict(arrowstyle='-', color=colour, lw=0.5,
+                                        shrinkA=0, shrinkB=1.5)
+                        if lead else None)
 
         figstyle.panel(ax, title)
         ax.set_xlim(0, hi)
