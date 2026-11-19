@@ -122,7 +122,7 @@ def main():
                label=f'Restricted sweep (n = {len(Bc)})')
     ax.scatter([b['viol'] for b in extra], [b['ch4'] for b in extra],
                s=22, facecolors='none', edgecolors=C_WIDE, linewidths=1.0,
-               zorder=2, label=f'Multiplier 1.5 and 1.7 (n = {len(extra)})')
+               zorder=2, label=f'Multipliers 1.5 and 1.7 (n = {len(extra)})')
     # The two envelopes coincide, so the wider one is drawn as a broad pale
     # band under the restricted one; both stay visible where they overlap.
     ax.plot([p[0] for p in Ew], [p[1] for p in Ew], color=C_WIDE, lw=4.5,
