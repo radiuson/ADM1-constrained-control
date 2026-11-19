@@ -186,13 +186,15 @@ def panel_shift(ax, R, dense_env, sparse_env):
     OFFS = {'crossq': (9, 4), 'ddpg': (9, -3), 'tqc': (-9, -5),
             'sac': (9, 5), 'td3': (-10, -6), 'recurrentppo': (9, -5),
             'ars': (10, 2), 'trpo': (0, 11), 'ppo': (0, -11)}
+    DPOS = {'sac': (-104, -14, 'right'), 'tqc': (-118, -38, 'right'),
+            'td3': (-80, -50, 'center'), 'ddpg': (-134, -62, 'right')}
     for d, sp, a_ in pts:
         c = C_ON if a_ in ON else (C_OFF if a_ in OFF else '#009E73')
         flip = (d < 0) != (sp < 0)
         if d < lim[0]:                       # A2C, off the left edge
             # The two medians rest on different runs: the full envelope
             # scores 20 of A2C's runs and the static-multiplier one 31.
-            ax.annotate(f'{LABEL[a_]}: {d:.0f} (20 runs),\n{sp:.0f} (31 runs)'.replace('-', '\u2212'),
+            ax.annotate(f'{LABEL[a_]}: {d:.0f} on 20 runs,\n{sp:.0f} on 31 runs'.replace('-', '\u2212'),
                         xy=(lim[0] + 1, sp), xytext=(lim[0] + 12, sp + 26),
                         fontsize=figstyle.TEXT, color=c, va='center', ha='left',
                         arrowprops=dict(arrowstyle='-|>', lw=0.7, color=c,
@@ -201,6 +203,15 @@ def panel_shift(ax, R, dense_env, sparse_env):
         ax.scatter([d], [sp], s=36 if flip else 20, c=c, zorder=4,
                    edgecolor=C_ENV if flip else 'none',
                    lw=0.9 if flip else 0)
+        if a_ in DPOS:
+            # The off-policy families sit close together, so each label is
+            # placed in clear space and tied to its marker by a leader.
+            tx, ty, ha = DPOS[a_]
+            ax.annotate(LABEL[a_], (d, sp), xytext=(tx, ty), textcoords='data',
+                        fontsize=figstyle.TEXT, color=c, va='center', ha=ha,
+                        arrowprops=dict(arrowstyle='-', color=c, lw=0.6,
+                                        shrinkA=1.5, shrinkB=3))
+            continue
         dx, dy = OFFS.get(a_, (9, 0))
         ha = 'center' if dx == 0 else ('left' if dx > 0 else 'right')
         ax.annotate(LABEL[a_], (d, sp), xytext=(dx, dy),
