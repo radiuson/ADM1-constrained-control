@@ -350,11 +350,14 @@ def _draw_frontier(ax, B, E, R, legend):
             runs = R.get(k, [])
             if not runs:
                 continue
-            mv = st.median([r['viol'] for r in runs])
-            ds = [r['ch4'] - float(np.interp(r['viol'], ex, ey))
-                  for r in runs if ex[0] <= r['viol'] <= ex[-1]]
-            if not ds:
+            # Rate and offset from the same runs: those inside the
+            # envelope's support, the runs Table 2 scores.
+            scored = [r for r in runs if ex[0] <= r['viol'] <= ex[-1]]
+            if not scored:
                 continue
+            mv = st.median([r['viol'] for r in scored])
+            ds = [r['ch4'] - float(np.interp(r['viol'], ex, ey))
+                  for r in scored]
             ax.plot([mv], [float(np.interp(mv, ex, ey)) + st.median(ds)],
                     marker=marker, ms=8.5, mfc=colour, mec='white', mew=1.3,
                     ls='', zorder=5)
