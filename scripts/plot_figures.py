@@ -538,6 +538,8 @@ def fig_tracking(out):
     # which stays separable under the common colour-vision deficiencies.
     groups = [('a', PROJECTION), ('b', PID), ('c', DUAL_ASCENT),
               ('d', OTHER_ONPOLICY)]
+    PANEL_TITLE = {'a': 'Constraint or projection', 'b': 'PID multiplier',
+                   'c': 'Dual ascent', 'd': 'No multiplier'}
     # The Okabe-Ito pink and amber are too light for text on white, so the
     # fourth and fifth colours are darker shades of the same hues.
     FAMILY_COLOURS = ('#0072B2', '#D55E00', '#009E73', '#A6448A',
@@ -547,7 +549,7 @@ def fig_tracking(out):
     # Every panel is squared on the same range, so the diagonal sits at 45
     # degrees in each and the four are directly comparable.
     fig, axg = plt.subplots(2, 2, figsize=(3.7, 4.1), sharex=True, sharey=True,
-                            gridspec_kw={'wspace': 0.62, 'hspace': 0.24})
+                            gridspec_kw={'wspace': 0.62, 'hspace': 0.34})
     axes = axg.ravel()
 
     for ax, (title, fams) in zip(axes, groups):
@@ -595,6 +597,7 @@ def fig_tracking(out):
                         if lead else None)
 
         figstyle.panel(ax, title)
+        ax.set_title(PANEL_TITLE[title], fontsize=figstyle.TEXT, pad=3)
         ax.set_xlim(0, hi)
         ax.set_ylim(0, hi)
         ax.set_xticks(targets)
@@ -603,7 +606,7 @@ def fig_tracking(out):
         ax.set_axisbelow(True)
 
     for ax in axg[:, 0]:
-        ax.set_ylabel('Violation rate (%)')
+        ax.set_ylabel('Fixed-horizon rate $r_C$ (%)')
     for ax in axg[1, :]:
         ax.set_xlabel('Violation budget (%)')
         ax.xaxis.set_tick_params(labelbottom=True)

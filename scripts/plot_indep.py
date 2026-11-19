@@ -63,7 +63,10 @@ def main(d, out):
     a.plot(sv[k], sc[k], 'D', ms=5, mfc='white', mec='black', mew=0.9, zorder=6)
     for r, v, c in zip(sel, sv, sc):
         if v <= XMAX:
-            a.annotate(f"{r['budget_pct']} %", (v, c), xytext=(-2, 7),
+            # The 3 % and 5 % selections sit close together, so the 3 % label
+            # goes below its marker.
+            below = r['budget_pct'] == '3'
+            a.annotate(f"budget {r['budget_pct']} %", (v, c), xytext=(-2, -9 if below else 7),
                        textcoords='offset points', fontsize=figstyle.TEXT, ha='right',
                        bbox=dict(boxstyle='square,pad=0.1', fc='white', ec='none', alpha=0.8),
                        zorder=7)

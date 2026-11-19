@@ -184,10 +184,12 @@ def panel_shift(ax, R, dense_env, sparse_env):
     # the cloud, so each family is named on its own marker; the offsets
     # separate the text alone and every marker stays on its two medians.
     # PPO and TRPO sit 14 units apart at the top right, too close for
-    # side labels, so they are stacked above and below their markers.
+    # side labels.  TRPO is the higher marker, so its label goes above it
+    # and PPO's below; the other way round each label sits level with the
+    # other family's marker and reads as belonging to it.
     OFFS = {'crossq': (9, 4), 'ddpg': (9, -3), 'tqc': (-9, -5),
             'sac': (9, 5), 'td3': (-10, -6), 'recurrentppo': (9, -5),
-            'ars': (10, 2), 'trpo': (0, -11), 'ppo': (0, 11)}
+            'ars': (10, 2), 'trpo': (0, 11), 'ppo': (0, -11)}
     for d, sp, a_ in pts:
         c = C_ON if a_ in ON else (C_OFF if a_ in OFF else '#009E73')
         flip = (d < 0) != (sp < 0)

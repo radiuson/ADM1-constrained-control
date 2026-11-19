@@ -123,7 +123,7 @@ def panel_severity(ax, R):
                    s=10, c=colour(fam), alpha=0.55, linewidths=0, zorder=2)
     # The hard limit measured from the soft limit, which is what excess_max is.
     ax.axhline(HARD_MG - SOFT_MG, color=C_RULE, lw=1.0, ls='--', zorder=3)
-    ax.text(0.02, HARD_MG - SOFT_MG, 'Hard limit: excess of 1200\n(1500 mg HAc-eq/L)', va='bottom', linespacing=1.1,
+    ax.text(0.02, HARD_MG - SOFT_MG, 'Hard limit, 1500 mg HAc-eq/L\n(excess of 1200 mg HAc-eq/L)', va='bottom', linespacing=1.1,
             ha='left', fontsize=figstyle.TEXT, transform=ax.get_yaxis_transform())
     ax.set_xlabel('Longest excursion (steps)')
     ax.set_ylabel('Peak excess over the soft limit (mg HAc-eq/L)')
