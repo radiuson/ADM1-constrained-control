@@ -537,8 +537,8 @@ def fig_tracking(out):
 
     # Every panel is squared on the same range, so the diagonal sits at 45
     # degrees in each and the four are directly comparable.
-    fig, axg = plt.subplots(2, 2, figsize=(7.0, 4.9), sharex=True, sharey=True,
-                            gridspec_kw={'wspace': 0.42, 'hspace': 0.22})
+    fig, axg = plt.subplots(2, 2, figsize=(3.7, 4.1), sharex=True, sharey=True,
+                            gridspec_kw={'wspace': 0.62, 'hspace': 0.24})
     axes = axg.ravel()
 
     for ax, (title, fams) in zip(axes, groups):
@@ -568,8 +568,8 @@ def fig_tracking(out):
         # A family that tracks near zero would otherwise be labelled on the
         # axis line itself, so the stack starts far enough up to clear it.
         ends.sort()
-        gap, placed = hi * 0.062, []
-        floor = hi * 0.022
+        gap, placed = hi * 0.10, []
+        floor = hi * 0.035
         for yv, xv, fam, colour in ends:
             pos = max(yv, floor) if not placed else max(yv, placed[-1] + gap)
             placed.append(pos)
@@ -599,12 +599,12 @@ def fig_tracking(out):
          plt.Rectangle((0, 0), 1, 1, color=C_OFF, alpha=0.12)]
     axg[1, 0].legend(h, ['Rate = budget', 'Off-policy family',
                        'Budget exceeded'],
-                   loc='upper left', bbox_to_anchor=(0, -0.30), ncol=3,
-                   frameon=False, handlelength=1.8, handletextpad=0.5,
-                   columnspacing=1.6, borderaxespad=0)
+                   loc='upper left', bbox_to_anchor=(-0.28, -0.34), ncol=3,
+                   frameon=False, handlelength=1.4, handletextpad=0.4,
+                   columnspacing=0.9, borderaxespad=0)
 
     p = os.path.join(out, 'fig_tracking.pdf')
-    figstyle.save(fig, p, figstyle.FULL)
+    figstyle.save(fig, p, figstyle.COLUMN)
     plt.close(fig)
     print(f'fig_tracking.pdf  {len(R)} constrained families in '
           f'{len(groups)} panels, {len(limits)} cost limits, '
