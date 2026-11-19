@@ -57,10 +57,10 @@ CORRECTED = {'a2c': 'models_align', 'ddpg': 'models_noise',
 WEIGHTS = ('lw0p5', 'lw1', 'lw2', 'lw5')
 
 
-# The learned policies are clipped to a feed-strength multiplier of 1.3, so a
-# conventional configuration above that commands an input the policies cannot.
-# The reported envelope holds both to the same actuator range; ADM1_FULL_RANGE
-# restores the wider sweep for the sensitivity check in the text.
+# The simulator limits the feed-strength multiplier to [0.7, 1.3] for every
+# controller, so the 16 single-loop PI records specified at 1.5 or 1.7 ran at
+# 1.3 and do not represent the multipliers in their names; they are left out
+# of the reference.
 MULT_MAX = 1.3
 
 
@@ -78,11 +78,10 @@ DUAL = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 
 
 def envelope():
-    B = [json.load(open(f)) for f in glob.glob(f'{DATA}/evbase/*.json')]
-    if not os.environ.get('ADM1_FULL_RANGE'):
-        B = [b for b in B if _mult(b) <= MULT_MAX]
+    B = [json.load(open(f)) for f in sorted(glob.glob(f'{DATA}/evbase/*.json'))]
+    B = [b for b in B if _mult(b) <= MULT_MAX]
     if not os.environ.get('ADM1_STATIC_ONLY'):
-        B += [json.load(open(f)) for f in glob.glob(f'{DUAL}/*.json')]
+        B += [json.load(open(f)) for f in sorted(glob.glob(f'{DUAL}/*.json'))]
     pts = sorted((b['viol'], b['ch4'], b['name']) for b in B)
     # Non-dominated points only: a point is kept when no evaluation at the
     # same or a lower rate reaches its flow.  Sorting by (rate, flow) and
@@ -101,6 +100,7 @@ def envelope():
 
 
 def boot(vals, rng, B=4000):
+    vals = sorted(vals)
     s = sorted(st.median([rng.choice(vals) for _ in vals]) for _ in range(B))
     return s[int(.025 * B)], s[int(.975 * B)]
 
@@ -119,7 +119,9 @@ def boot_by_seed(runs, value, rng, B=4000):
         v = value(r)
         if v is not None:
             by[r.get('seed')].append(v)
-    seeds = [k for k in by if by[k]]
+    # Seeds are sorted so that the resampling, and hence the interval, does
+    # not depend on the order in which the result files are listed.
+    seeds = sorted(k for k in by if by[k])
     if not seeds:
         return float('nan'), float('nan')
     out = []
@@ -148,7 +150,7 @@ def main():
 
     # ---- reward-penalty -------------------------------------------------
     R = defaultdict(list)
-    for f in glob.glob(f'{DATA}/evres/*.json'):
+    for f in sorted(glob.glob(f'{DATA}/evres/*.json')):
         d = json.load(open(f))
         if d.get('steps') != 150000 or '_h5_' in d.get('model', ''):
             continue
@@ -206,7 +208,7 @@ def main():
 
     # ---- constrained ----------------------------------------------------
     C = defaultdict(list)
-    for f in glob.glob(f'{DATA}/evcmdp/*.json'):
+    for f in sorted(glob.glob(f'{DATA}/evcmdp/*.json')):
         d = json.load(open(f))
         C[d['algo']].append(d)
 

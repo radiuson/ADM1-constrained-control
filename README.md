@@ -64,7 +64,6 @@ Run the scripts from the repository root. Figures are written to `figures/`.
 | Frontier, tracking | `scripts/plot_figures.py` |
 | Excursion severity | `scripts/plot_severity.py` |
 | Reference density | `scripts/plot_density.py` |
-| Conventional actuator range | `scripts/plot_range.py` |
 | Plant VFA thresholds and correlations | `scripts/plant_thresholds.py`, `scripts/plant_block_bootstrap.py` |
 | Simulated against recorded VFA and alkalinity | `scripts/vfa_scale_comparison.py`, `scripts/alkalinity_comparison.py` |
 | Discretisation check | `scripts/discretisation_check.py` |
